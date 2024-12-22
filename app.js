@@ -6,8 +6,12 @@ import { Client, Events, GatewayIntentBits} from "discord.js";
 import * as dotenv from "dotenv";
 
 dotenv.config();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const __services = __dirname.replace("server-statusbot", "");
+
+console.log(__dirname);
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -19,7 +23,7 @@ client.login(process.env.DISCORD_TOKEN);
 
 
 setInterval(async function() {
-    const result = await compose.ps({ cwd: path.join(__dirname) });
+    const result = await compose.ps({ cwd: path.join(__services) });
     var output = "";
     var oldOutput;
 
