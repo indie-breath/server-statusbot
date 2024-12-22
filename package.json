@@ -1,0 +1,15 @@
+{
+  "name": "server-statusbot",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "indiebreath",
+  "license": "ISC",
+  "type": "module",
+  "description": "",
+  "dependencies": {
+    "docker-compose": "^1.1.0"
+  }
+}
