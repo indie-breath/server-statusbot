@@ -17,45 +17,49 @@ client.once(Events.ClientReady, readyClient => {
 
 client.login(process.env.DISCORD_TOKEN);
 
-fetch(process.env.DISCORD_CHANNEL, {
-    body: JSON.stringify({
-        content: "Testing message",
-    }),
-    headers: {
-        "Content-Type": "application/json",
-    },
-    method: "POST",
-})
-    .then(function (res) {
-        console.log(res);
-    })
-    .catch(function (res) {
-        console.log(res);
-    });
 
-/*setInterval(async function() {
+setInterval(async function() {
     const result = await compose.ps({ cwd: path.join(__dirname) });
     var output = "";
     var oldOutput;
 
     result.data.services.forEach((service) => {
-        if (service.name == "web") {
+        if (service.name == process.env.SERVICE_NAME) {
             output = service.state;
         }
     });
 
     if (output.length == 0) {
-        fs.writeFile("status.txt", "Server is down.", function (err) {
-            if (err) throw err;
-        });
-        oldOutput = "Server is down.";
+        output = "Server is down."
     }
     else if (output.length > 0) {
-        fs.writeFile("status.txt", "Server is up.", function (err) {
-            if (err) throw err;
-        });
-        oldOutput = "Server is down.";
+        output = "Server is up."
     }
 
+    fs.readFile("output.txt", function (err, data) {
+        if (output != data) {
+            fetch(process.env.DISCORD_CHANNEL, {
+                body: JSON.stringify({
+                    content: output,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            })
+                .then(function (res) {
+                    console.log(res);
+                })
+                .catch(function (res) {
+                    console.log(res);
+                });
+        }
+
+        fs.writeFile("output.txt", output, function (err) {
+            if (err) throw err;
+        });
+    });
+
+
     console.log("Ran everything.");
-}, 5 * 1000);*/
+}, 5 * 1000);
